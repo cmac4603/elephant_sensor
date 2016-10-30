@@ -12,17 +12,15 @@ class SDS011():
         self.ser.open()
         self.ser.flushInput()
 
-    def process_frame(self, d):
-        r = struct.unpack('<HHxxBBB', d[2:])
-        self.pm25 = r[0] / 10.0
-        self.pm10 = r[1] / 10.0
-        self.checksum = sum(ord(v) for v in d[2:8]) % 256
-        return (self.pm25, self.pm10, self.checksum)
-
     def run(self):
         byte, data = 0, ""
         while byte != "\xaa":
             byte = self.ser.read(size=1)
         d = self.ser.read(size=10)
         if d[0] == "\xc0":
-            self.process_frame(byte + d)
+            d = byte + d
+            r = struct.unpack('<HHxxBBB', d[2:])
+            pm25 = r[0] / 10.0
+            pm10 = r[1] / 10.0
+            checksum = sum(ord(v) for v in d[2:8]) % 256
+            return pm25, pm10, checksum

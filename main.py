@@ -24,7 +24,11 @@ lcd = LCD.Adafruit_CharLCD(lcd_rs, lcd_en, lcd_d4, lcd_d5, lcd_d6, lcd_d7,
 
 if __name__ == "__main__":
     dust = SDS011()
-    pm25, pm10, crc = dust.run()
-    lcd.message("PM 2.5: {} μg/m^3  PM 10: {} μg/m^3 CRC={}".format(pm25, pm10, "OK" if (checksum==r[2] and r[3]==0xab) else "NOK"))
-    time.sleep(5)
-    lcd.clear()
+    try:
+        while True:
+            pm25, pm10, crc = dust.run()
+            lcd.message("PM2.5:{}ug/m^3\nPM10:{}ug/m^3".format(pm25, pm10))
+            time.sleep(5)
+    except KeyboardInterrupt:
+        lcd.clear()
+        exit()
