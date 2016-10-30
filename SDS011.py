@@ -9,9 +9,6 @@ ser.baudrate = 9600
 ser.open()
 ser.flushInput()
 
-byte, data = 0, ""
-
-
 class SDS011():
     def process_frame(self, d):
         r = struct.unpack('<HHxxBBB', d[2:])
@@ -21,6 +18,7 @@ class SDS011():
         return (pm25, pm10, checksum)
 
     def run(self):
+        byte, data = 0, ""
         while byte != "\xaa":
             byte = ser.read(size=1)
         d = ser.read(size=10)

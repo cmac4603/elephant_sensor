@@ -1,4 +1,5 @@
 #!/usr/bin/python
+# coding=utf-8
 from SDS011 import SDS011
 import time
 
@@ -22,8 +23,8 @@ lcd = LCD.Adafruit_CharLCD(lcd_rs, lcd_en, lcd_d4, lcd_d5, lcd_d6, lcd_d7,
                            lcd_columns, lcd_rows, lcd_backlight)
 
 if __name__ == "__main__":
-    pm25, pm10, crc = SDS011.run()
-    # Print a two line message
+    dust = SDS011()
+    pm25, pm10, crc = dust.run()
     lcd.message("PM 2.5: {} μg/m^3  PM 10: {} μg/m^3 CRC={}".format(pm25, pm10, "OK" if (checksum==r[2] and r[3]==0xab) else "NOK"))
     time.sleep(5)
     lcd.clear()
