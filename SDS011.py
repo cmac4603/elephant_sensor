@@ -2,14 +2,16 @@
 from __future__ import print_function
 import serial, struct
 
-ser = serial.Serial()
-ser.port = '/dev/ttyUSB0'
-ser.baudrate = 9600
-
-ser.open()
-ser.flushInput()
 
 class SDS011():
+
+    def __init__(self):
+        self.ser = serial.Serial()
+        self.ser.port = '/dev/ttyUSB0'
+        self.ser.baudrate = 9600
+        self.ser.open()
+        self.ser.flushInput()
+
     def process_frame(self, d):
         r = struct.unpack('<HHxxBBB', d[2:])
         pm25 = r[0] / 10.0
@@ -20,7 +22,7 @@ class SDS011():
     def run(self):
         byte, data = 0, ""
         while byte != "\xaa":
-            byte = ser.read(size=1)
-        d = ser.read(size=10)
+            byte = self.ser.read(size=1)
+        d = self.ser.read(size=10)
         if d[0] == "\xc0":
             self.process_frame(byte + d)
