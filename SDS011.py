@@ -14,10 +14,10 @@ class SDS011():
 
     def process_frame(self, d):
         r = struct.unpack('<HHxxBBB', d[2:])
-        pm25 = r[0] / 10.0
-        pm10 = r[1] / 10.0
-        checksum = sum(ord(v) for v in d[2:8]) % 256
-        return (pm25, pm10, checksum)
+        self.pm25 = r[0] / 10.0
+        self.pm10 = r[1] / 10.0
+        self.checksum = sum(ord(v) for v in d[2:8]) % 256
+        return (self.pm25, self.pm10, self.checksum)
 
     def run(self):
         byte, data = 0, ""
