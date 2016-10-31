@@ -3,7 +3,7 @@
 from SDS011 import SDS011
 from GPS import GPSPoller
 import time
-
+from tinydb import TinyDB, where
 import Adafruit_CharLCD as LCD
 
 # Raspberry Pi pin configuration:
@@ -23,6 +23,10 @@ lcd_rows = 2
 lcd = LCD.Adafruit_CharLCD(lcd_rs, lcd_en, lcd_d4, lcd_d5, lcd_d6, lcd_d7,
                            lcd_columns, lcd_rows, lcd_backlight)
 
+# Initialize TinyDB with DB in /tmp
+db = TinyDB('/tmp/db.json')
+table = db.table('pollution')
+
 if __name__ == "__main__":
     dust = SDS011()
     gps = GPSPoller()
@@ -33,8 +37,10 @@ if __name__ == "__main__":
             lcd.message("PM2.5:{}ug/m^3\nPM10:{}ug/m^3".format(pm25, pm10))
             time.sleep(5)
             lcd.clear()
-            lcd.message("LAT:{}\nLON:{}".format(gps.gpsd.fix.latitude, gps.gpsd.fix.longitude))
+            lat, lon = gps.gpsd.fix.latitude, gps.gpsd.fix.longitude
+            lcd.message("LAT:{}\nLON:{}".format(lat, lon))
             time.sleep(5)
+            table.insert({'pm25': pm25, 'pm10': pm10, 'latitude': lat, 'longitude': lon})
             lcd.clear()
     except KeyboardInterrupt:
         lcd.clear()
