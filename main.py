@@ -2,6 +2,7 @@
 # coding=utf-8
 from SDS011 import SDS011
 from GPS import GPSPoller
+import os
 import time
 from tinydb import TinyDB, where
 import Adafruit_CharLCD as LCD
@@ -23,8 +24,12 @@ lcd_rows = 2
 lcd = LCD.Adafruit_CharLCD(lcd_rs, lcd_en, lcd_d4, lcd_d5, lcd_d6, lcd_d7,
                            lcd_columns, lcd_rows, lcd_backlight)
 
-# Initialize TinyDB with DB in /tmp
-db = TinyDB('/tmp/db.json')
+# Check if TinyDB JSON file already exists
+if not os.path.isfile('/home/pi/db.json'):
+    file('/home/pi/db.json', 'w').close()
+
+# Initialize TinyDB with DB in /home/pi
+db = TinyDB('/home/pi/db.json')
 table = db.table('pollution')
 
 if __name__ == "__main__":
