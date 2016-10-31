@@ -32,8 +32,10 @@ if __name__ == "__main__":
             pm25, pm10, crc = dust.run()
             lcd.message("PM2.5:{}ug/m^3\nPM10:{}ug/m^3".format(pm25, pm10))
             time.sleep(5)
+            lcd.clear()
             lcd.message("LAT:{}\nLON:{}".format(gps.gpsd.fix.latitude, gps.gpsd.fix.longitude))
             time.sleep(5)
+            lcd.clear()
     except KeyboardInterrupt:
         lcd.clear()
         gps.running = False
