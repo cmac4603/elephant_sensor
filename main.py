@@ -4,6 +4,7 @@ from SDS011 import SDS011
 from GPS import GPSPoller
 import os
 import time
+import math
 from tinydb import TinyDB, where
 import Adafruit_CharLCD as LCD
 
@@ -46,7 +47,7 @@ if __name__ == "__main__":
             lat, lon = gps.gpsd.fix.latitude, gps.gpsd.fix.longitude
             lcd.message("LAT:{}\nLON:{}".format(lat, lon))
             time.sleep(5)
-            if lat != 'Nan':
+            if not math.isnan(lat):
                 table.insert({'pm25': pm25, 'pm10': pm10, 'latitude': lat, 'longitude': lon})
             lcd.clear()
         except TypeError:
