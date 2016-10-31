@@ -45,7 +45,8 @@ if __name__ == "__main__":
             lat, lon = gps.gpsd.fix.latitude, gps.gpsd.fix.longitude
             lcd.message("LAT:{}\nLON:{}".format(lat, lon))
             time.sleep(5)
-            table.insert({'pm25': pm25, 'pm10': pm10, 'latitude': lat, 'longitude': lon})
+            if lat != 'Nan':
+                table.insert({'pm25': pm25, 'pm10': pm10, 'latitude': lat, 'longitude': lon})
             lcd.clear()
     except KeyboardInterrupt:
         lcd.clear()
