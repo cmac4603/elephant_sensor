@@ -1,6 +1,7 @@
 #!/usr/bin/python
 # coding=utf-8
 from SDS011 import SDS011
+import gps
 import time
 
 import Adafruit_CharLCD as LCD
@@ -16,7 +17,7 @@ lcd_backlight = 4
 
 # Define LCD column and row size for 16x2 LCD.
 lcd_columns = 16
-lcd_rows    = 2
+lcd_rows = 2
 
 # Initialize the LCD using the pins above.
 lcd = LCD.Adafruit_CharLCD(lcd_rs, lcd_en, lcd_d4, lcd_d5, lcd_d6, lcd_d7,
@@ -24,10 +25,14 @@ lcd = LCD.Adafruit_CharLCD(lcd_rs, lcd_en, lcd_d4, lcd_d5, lcd_d6, lcd_d7,
 
 if __name__ == "__main__":
     dust = SDS011()
+    gpsd = gps(mode=WATCH_ENABLE)
+    gpsd.start()
     try:
         while True:
             pm25, pm10, crc = dust.run()
             lcd.message("PM2.5:{}ug/m^3\nPM10:{}ug/m^3".format(pm25, pm10))
+            time.sleep(5)
+            lcd.message("LAT:{}\nLON:{}".format(gpsd.fix.latitude, gpsd.fix.longitude))
             time.sleep(5)
     except KeyboardInterrupt:
         lcd.clear()
