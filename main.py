@@ -35,9 +35,10 @@ table = db.table('pollution')
 if __name__ == "__main__":
     dust = SDS011()
     gps = GPSPoller()
-    try:
-        gps.start()
-        while True:
+    gps.start()
+    while True:
+        try:
+            os.system('clear')
             pm25, pm10, crc = dust.run()
             lcd.message("PM2.5:{}ug/m^3\nPM10:{}ug/m^3".format(pm25, pm10))
             time.sleep(5)
@@ -47,8 +48,10 @@ if __name__ == "__main__":
             time.sleep(5)
             table.insert({'pm25': pm25, 'pm10': pm10, 'latitude': lat, 'longitude': lon})
             lcd.clear()
-    except KeyboardInterrupt:
-        lcd.clear()
-        gps.running = False
-        gps.join()
-        exit()
+        except TypeError:
+            continue
+        except KeyboardInterrupt:
+            lcd.clear()
+            gps.running = False
+            gps.join()
+            exit()
