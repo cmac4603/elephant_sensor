@@ -1,7 +1,7 @@
 #!/usr/bin/python
 # coding=utf-8
 from SDS011 import SDS011
-import gps
+from GPS import GPSPoller
 import time
 
 import Adafruit_CharLCD as LCD
@@ -25,15 +25,17 @@ lcd = LCD.Adafruit_CharLCD(lcd_rs, lcd_en, lcd_d4, lcd_d5, lcd_d6, lcd_d7,
 
 if __name__ == "__main__":
     dust = SDS011()
-    gpsd = gps(mode=WATCH_ENABLE)
-    gpsd.start()
+    gps = GPSPoller()
     try:
+        gps.start()
         while True:
             pm25, pm10, crc = dust.run()
             lcd.message("PM2.5:{}ug/m^3\nPM10:{}ug/m^3".format(pm25, pm10))
             time.sleep(5)
-            lcd.message("LAT:{}\nLON:{}".format(gpsd.fix.latitude, gpsd.fix.longitude))
+            lcd.message("LAT:{}\nLON:{}".format(gps.gpsd.fix.latitude, gps.gpsd.fix.longitude))
             time.sleep(5)
     except KeyboardInterrupt:
         lcd.clear()
+        gps.running = False
+        gps.join()
         exit()
