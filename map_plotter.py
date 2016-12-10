@@ -1,26 +1,72 @@
-from __future__ import print_function
+"""
+This file retrieves the tinydb from the pi, saves it locally, and saves the
+bokey-google maps html file
+"""
 
+from __future__ import print_function
+import paramiko
+import datetime
 import json
 from bokeh.document import Document
 from bokeh.embed import file_html
 from bokeh.models.glyphs import Circle
 from bokeh.models import (
-    GMapPlot, Range1d, ColumnDataSource, PanTool, WheelZoomTool, BoxSelectTool, GMapOptions)
+    GMapPlot, Range1d, ColumnDataSource, PanTool, WheelZoomTool, BoxSelectTool,
+    GMapOptions)
 from bokeh.resources import INLINE
+
 
 x_range = Range1d()
 y_range = Range1d()
 
 # JSON style string taken from: https://snazzymaps.com/style/1/pale-dawn
-map_options = GMapOptions(lat=51.5356, lng=-0.0789, map_type="roadmap", zoom=10, styles="""
-[{"featureType":"administrative","elementType":"all","stylers":[{"visibility":"on"},{"lightness":33}]},{"featureType":"landscape","elementType":"all","stylers":[{"color":"#f2e5d4"}]},{"featureType":"poi.park","elementType":"geometry","stylers":[{"color":"#c5dac6"}]},{"featureType":"poi.park","elementType":"labels","stylers":[{"visibility":"on"},{"lightness":20}]},{"featureType":"road","elementType":"all","stylers":[{"lightness":20}]},{"featureType":"road.highway","elementType":"geometry","stylers":[{"color":"#c5c6c6"}]},{"featureType":"road.arterial","elementType":"geometry","stylers":[{"color":"#e4d7c6"}]},{"featureType":"road.local","elementType":"geometry","stylers":[{"color":"#fbfaf7"}]},{"featureType":"water","elementType":"all","stylers":[{"visibility":"on"},{"color":"#acbcc9"}]}]
+map_options = GMapOptions(lat=51.5356, lng=-0.0789, map_type="roadmap",
+                          zoom=10, styles="""[{"featureType":"administrative",
+                          "elementType":"all","stylers":[{"visibility":"on"},
+                          {"lightness":33}]},{"featureType":"landscape",
+                          "elementType":"all","stylers":[{"color":"#f2e5d4"}]},
+                          {"featureType":"poi.park","elementType":"geometry",
+                          "stylers":[{"color":"#c5dac6"}]},
+                          {"featureType":"poi.park","elementType":"labels",
+                          "stylers":[{"visibility":"on"},{"lightness":20}]},
+                          {"featureType":"road","elementType":"all",
+                          "stylers":[{"lightness":20}]},
+                          {"featureType":"road.highway",
+                          "elementType":"geometry",
+                          "stylers":[{"color":"#c5c6c6"}]},
+                          {"featureType":"road.arterial",
+                          "elementType":"geometry",
+                          "stylers":[{"color":"#e4d7c6"}]},
+                          {"featureType":"road.local","elementType":"geometry",
+                          "stylers":[{"color":"#fbfaf7"}]},
+                          {"featureType":"water","elementType":"all",
+                          "stylers":[{"visibility":"on"},{"color":"#acbcc9"}]}]
 """)
+
+
+def ssh_download(db_file):
+    try:
+        client = paramiko.SSHClient()
+        client.set_missing_host_key_policy(paramiko.AutoAddPolicy())
+        client.connect('192.168.1.10', username='pi', password='raspberry')
+        # stdin, stdout, stderr = client.exec_command('ls -l')
+    except paramiko.AuthenticationException:
+        print("Ah shite!")
+        exit()
+
+    remote_file = '/home/pi/db.json'
+    ftp = client.open_sftp()
+    ftp.get(remote_file, db_file)
+    ftp.close()
+
 
 # Google Maps requires an API key. You can find out how to get one here:
 # https://developers.google.com/maps/documentation/javascript/get-api-key
 API_KEY = "XXXXXX"
 
-database = json.load(open("/home/pi/db.json"))
+local_file = '{0}_elephant_sensor_db.json'.format(datetime.date.today())
+ssh_download(local_file)
+database = json.load(open(local_file))
 num_results = len(database["pollution"]) + 1
 
 plot = GMapPlot(
@@ -50,6 +96,7 @@ def feel_the_fear(measurement):
             results_list.append('red')
     return results_list
 
+
 source = ColumnDataSource(
     data=dict(
         lat=get_the_values("latitude"),
@@ -58,7 +105,8 @@ source = ColumnDataSource(
     )
 )
 
-circle = Circle(x="lon", y="lat", size=15, fill_color="fill", line_color="black")
+circle = Circle(x="lon", y="lat", size=15, fill_color="fill",
+                line_color="black")
 plot.add_glyph(source, circle)
 
 pan = PanTool()

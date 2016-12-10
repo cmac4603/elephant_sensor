@@ -48,7 +48,8 @@ if __name__ == "__main__":
             lcd.message("LAT:{}\nLON:{}".format(lat, lon))
             time.sleep(5)
             if not math.isnan(lat):
-                table.insert({'pm25': pm25, 'pm10': pm10, 'latitude': lat, 'longitude': lon})
+                table.insert({'pm25': pm25, 'pm10': pm10, 'latitude': lat,
+                              'longitude': lon})
             lcd.clear()
         except TypeError:
             continue
