@@ -5,13 +5,13 @@
 
 ### Prequisite commands
 
-Standard python-related commands and modules for Ubuntu/Debian/Raspbian
+_Standard python-related commands and modules for Ubuntu/Debian/Raspbian_
 
 `sudo apt-get install build-essential python-dev python-smbus python-pip`
 
 `sudo pip install -r requirements`
 
-To get the GPS linux module working
+_To get the GPS linux module working_
 
 `sudo apt-get install gpsd gpsd-clients`
 
