@@ -1,15 +1,23 @@
 # elephant_sensor
 
-## Air pollution sensor with GPS, SDS011 &amp; NO2, and LCD readings
+## Air pollution sensor on the Pi zero recording 2.5/10PPM (SDS011) with GPS, displayed on a LCD 16x2 matrix and writing to TinyDb
+
+### Prequisite commands
+
+Standard python-related commands and modules for Ubuntu/Debian/Raspbian
 
 `sudo apt-get install build-essential python-dev python-smbus python-pip`
 
-`sudo pip install RPi.GPIO`
+`sudo pip install -r requirements`
 
-`cd /tmp\nclone\ncd /tmp/Adafruit_Python_CharLCD\nsudo python setup.py install`
+To get the GPS linux module working
 
 `sudo apt-get install gpsd gpsd-clients`
 
 `sudo gpsd /dev/ttyAMA0 -F /var/run/gpsd.sock`
 
-`sudo systemctl stop gpsd.socket\nsudo systemctl disable gpsd.socket\nsudo gpsd /dev/ttyAMA0 -F /var/run/gpsd.sock`
+`sudo systemctl stop gpsd.socket`
+
+`sudo systemctl disable gpsd.socket`
+
+`sudo gpsd /dev/ttyAMA0 -F /var/run/gpsd.sock`
