@@ -1,4 +1,5 @@
 # elephant_sensor
+![Elephant Sensor](icon.png)
 
 ## Air pollution sensor on the Pi zero recording 2.5/10PPM (SDS011) with GPS, displayed on a LCD 16x2 matrix and writing to TinyDb
 
