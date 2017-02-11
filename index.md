@@ -3,12 +3,13 @@
 ## Air pollution sensor that can run on a Pi-Zero recording 2.5/10PPM (SDS011) with GPS, displayed on a LCD 16x2 matrix and writing to TinyDb
 
 ### How to use
-- ###Plug 'n' Play
+
+###Plug 'n' Play
   - As soon as the battery is plugged in to the Pi-Zero, the main program will run.
   - Only when the GPS sensor begins returning latitude and longitude readings, is any data actually saved. It will still show readings on the LCD screen, as these flash across the screen every couple of seconds, but until GPS is active, none of the other data is saved.
   - So all you need to do is take it outside, and it will start recording 2.5 & 10 PPM readings, your location, and the time
  
-- ###Map the Data
+###Map the Data
   - There is a script in this repository, `map_plotter.py`. This will grab all the data saved and plot it onto a Google Maps.
   - Connect the Raspberry Pi to your local wifi, find out it's local IP (via your router, or if you SSH onto the Pi you can use `ifconfig` and look for wlan0 usually. Over ethernet will usually be eth0).
   - Change the IP var in the python script using any text editor
