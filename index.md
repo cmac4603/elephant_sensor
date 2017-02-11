@@ -1,37 +1,25 @@
-## Welcome to GitHub Pages
+## Welcome to the Elephant Sensor Page
 
-You can use the [editor on GitHub](https://github.com/cmac4603/elephant_sensor/edit/gh-pages/index.md) to maintain and preview the content for your website in Markdown files.
+![Elephant Sensor](icon.png)
 
-Whenever you commit to this repository, GitHub Pages will run [Jekyll](https://jekyllrb.com/) to rebuild the pages in your site, from the content in your Markdown files.
+## Air pollution sensor on the Pi zero recording 2.5/10PPM (SDS011) with GPS, displayed on a LCD 16x2 matrix and writing to TinyDb
 
-### Markdown
+### Prequisite commands
 
-Markdown is a lightweight and easy-to-use syntax for styling your writing. It includes conventions for
+_Standard python-related commands and modules for Ubuntu/Debian/Raspbian_
 
-```markdown
-Syntax highlighted code block
+`sudo apt-get install build-essential python-dev python-smbus python-pip`
 
-# Header 1
-## Header 2
-### Header 3
+`sudo pip install -r requirements`
 
-- Bulleted
-- List
+_To get the GPS linux module working_
 
-1. Numbered
-2. List
+`sudo apt-get install gpsd gpsd-clients`
 
-**Bold** and _Italic_ and `Code` text
+`sudo gpsd /dev/ttyAMA0 -F /var/run/gpsd.sock`
 
-[Link](url) and ![Image](src)
-```
+`sudo systemctl stop gpsd.socket`
 
-For more details see [GitHub Flavored Markdown](https://guides.github.com/features/mastering-markdown/).
+`sudo systemctl disable gpsd.socket`
 
-### Jekyll Themes
-
-Your Pages site will use the layout and styles from the Jekyll theme you have selected in your [repository settings](https://github.com/cmac4603/elephant_sensor/settings). The name of this theme is saved in the Jekyll `_config.yml` configuration file.
-
-### Support or Contact
-
-Having trouble with Pages? Check out our [documentation](https://help.github.com/categories/github-pages-basics/) or [contact support](https://github.com/contact) and we’ll help you sort it out.
+`sudo gpsd /dev/ttyAMA0 -F /var/run/gpsd.sock`
