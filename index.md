@@ -1,5 +1,3 @@
-# Welcome to the Elephant Sensor Page
-
 ![Elephant Sensor](icon.png)
 
 ## Air pollution sensor that can run on a Pi-Zero recording 2.5/10PPM (SDS011) with GPS, displayed on a LCD 16x2 matrix and writing to TinyDb
