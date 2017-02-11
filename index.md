@@ -21,7 +21,7 @@
 
 
 ### Prequisite commands
-#### As well as the code in this repository, you will also need to run the following commands on the Pi
+As well as the code in this repository, you will also need to run the following commands on the Pi
 
 _Python-related commands and modules for Ubuntu/Debian/Raspbian_
 
