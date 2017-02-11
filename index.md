@@ -2,7 +2,7 @@
 
 ## Air pollution sensor that can run on a Pi-Zero recording 2.5/10PPM (SDS011) with GPS, displayed on a LCD 16x2 matrix and writing to TinyDb
 
-### How to use
+### How to Use:
 
 ### Plug 'n' Play
 
