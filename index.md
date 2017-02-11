@@ -14,7 +14,7 @@
   - Change the IP var in the python script using any text editor
   - You will also need an API key from [here](https://developers.google.com/maps/documentation/javascript/get-api-key) to gain access to the Google Maps API. You will also then need to change the API_KEY object, currently set to 'XXXXX' in this repo. 
   - Then in the terminal of the Pi run:
-  > `python map_plotter.py`
+```python map_plotter.py```
   - This will create 'maps.html' in the current directory, and you will have a lovely map with colour-coded location markers showing how filthy the air was you were breathing!
 
 
