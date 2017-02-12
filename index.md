@@ -24,7 +24,7 @@
 ### Prequisite commands
 As well as the code in this repository, you will also need to run the following commands on the Pi
 
-_Python-related commands and modules for Ubuntu/Debian/Raspbian_
+_Python-related commands and modules, tested on Raspbian Jessie OS_
 
 ```
 sudo apt-get install build-essential python-dev python-smbus python-pip
